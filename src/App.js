@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import { getByPlaceholderText } from '@testing-library/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const friends = ['kamal','jamal','salma','asad']
@@ -16,6 +16,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Counter></Counter>
+        <Users></Users>
         <ul>
           {
             friends.map(fname => <li>{fname}</li>)
@@ -35,8 +36,28 @@ function Counter() {
   return(
     <div>
       <h1>Count : {count}</h1>
-      <button onClick={() => setCount(count + 1)}>Increase</button>
+      <button onMouseMove={() => setCount(count + 1)}>Increase</button>
       <button onClick={()=> setCount(count-1)}>Decrease</button>
+    </div>
+  )
+}
+
+function Users() {
+  const[users, setUsers] = useState([])
+
+  useEffect(()=>{
+    fetch('https://jsonplaceholder.typicode.com/users')
+    .then(res => res.json())
+    .then(data => setUsers(data))
+  },[])
+  return(
+    <div>
+      <h2>Users : {users.length}</h2>
+      <ul>
+        {
+            users.map(user =><li>{user.name}</li>)
+        }
+      </ul>
     </div>
   )
 }
